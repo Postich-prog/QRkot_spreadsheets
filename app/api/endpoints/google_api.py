@@ -15,7 +15,9 @@ GOOGLE_SHEETS_URL = "https://docs.google.com/spreadsheets/d/"
 
 
 @router.post(
-    "/", dependencies=[Depends(current_superuser)], summary="Отчет по закрытым проектам"
+    "/",
+    dependencies=(Depends(current_superuser),),
+    summary="Отчет по закрытым проектам",
 )
 async def get_spreadsheet_report(
     aiogoogle_object: Aiogoogle = Depends(get_service),
