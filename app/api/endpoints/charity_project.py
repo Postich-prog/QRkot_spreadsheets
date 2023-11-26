@@ -21,7 +21,6 @@ router = APIRouter()
     "/",
     response_model=CharityProjectDB,
     response_model_exclude_none=True,
-    # при добавлении response_model_exclude_defaults=True тест валится либо я неправильно прописал
     dependencies=(Depends(current_superuser),),
 )
 async def create_new_charity_project(
@@ -30,7 +29,11 @@ async def create_new_charity_project(
 ):
     """Только для суперюзеров."""
     # black и isort я применял перед первым ревью ко всему проекту
-    await check_info_none(charity_project.name, charity_project.description, session)
+    await check_info_none(
+        charity_project.name,
+        charity_project.description,
+        session
+    )
     await check_name_duplicate(charity_project.name, session)
     new_project = await charityproject_crud.create(charity_project, session)
     new_project = await make_donation(session, new_project)
